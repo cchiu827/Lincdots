@@ -1,10 +1,10 @@
 ******************************************************************
 **	Utilities v9.h												**
-**	Copyright © 2008-2014 by Imagine That, Inc.					**
+**	Copyright Â© 2008-2014 by Imagine That, Inc.					**
 **	All rights reserved.										**
 **	Created by Anthony Nastasi									**
 ******************************************************************
-
+// this is a test by Chiu
 
 
 ******************************************************************
