@@ -24,8 +24,6 @@ integer SetupExcel(String ThisWorkbook);
 string array_DropDownMenu[];
 
 
-
-
 Procedure DeleteTableItems(String ls_SelectedTable, long li_DBTblIdx);
 
 ******************************************************************************************************************************************
@@ -65,7 +63,8 @@ Procedure OpenBrowseFile()
 		{
 			if (blankname)
 			{
-				FileName_txt = StripPathIfLocal(IPCGetDocName());
+				if (gi_DontStrip == FALSE) FileName_txt = StripPathIfLocal(IPCGetDocName());
+				else if (gi_DontStrip == TRUE) FileName_txt = IPCGetDocName();
 			}
 		}
 	}
@@ -198,6 +197,7 @@ String ExcelSheetDropdownMenuInTable(String ls_DialogClicked, string FileName)
 	else Return(BLANK);
 }
 
+#ifdef Filename_txt 
 #ifdef XLDBSelectWhich_pop
 Procedure AfterXLSheetWhich()
 {
@@ -235,6 +235,7 @@ Procedure AfterXLSheetWhich()
 
 	CleanUpExcel();
 }
+#endif
 #endif
 
 ******************************************************************************************************************************************

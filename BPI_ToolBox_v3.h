@@ -318,6 +318,73 @@ Integer FindRecord(string ls_FindValue, string ls_TableName, integer li_ColumnIn
 	return(li_FindIndex);
 }
 
+Procedure CopyAndPasteDBTableContent(long li_FromDBIndex, long li_FromDBTblIdx, long li_ToDBIndex, long li_ToDBTblIdx, 
+									 long li_StartRecordIdx, long li_EndRecordIdx, long li_StartFieldIdx, long li_EndFieldIdx, long li_TopRecord, long li_LeftFieldIdx)
+{
+	long li_Record;
+	long li_Field;
+	string ls_Value;
+	long li_TargetRecordIdx;
+	long li_TargetFieldIdx;
+	
+	if (li_EndFieldIdx == 0) // if input of end field index is 0, use the last field index as end field index
+	{
+		li_EndFieldIdx = DBFieldsGetNum(li_FromDBIndex, li_FromDBTblIdx);
+	}
+	
+	if (li_EndRecordIdx == 0) // if input of end record index is 0, use the last record index as end record index
+	{
+		li_EndRecordIdx = DBRecordsGetNum(li_FromDBIndex, li_FromDBTblIdx);
+	}
+	
+	// start copy-and-paste	
+	for (li_Record = li_StartRecordIdx; li_Record <= li_EndRecordIdx; li_Record++)
+	{
+		for (li_Field = li_StartFieldIdx; li_Field <= li_EndFieldIdx; li_Field++)
+		{
+			ls_Value = DBDataGetAsString(li_FromDBIndex, li_FromDBTblIdx, li_Field, li_Record);
+			
+			li_TargetRecordIdx = li_Record - li_StartRecordIdx + li_TopRecord;
+			li_TargetFieldIdx = li_Field - li_StartFieldIdx + li_LeftFieldIdx;
+			
+			DBDataSetAsString(li_ToDBIndex, li_ToDBTblIdx, li_TargetFieldIdx, li_TargetRecordIdx, ls_Value);
+		}
+	}
+}
+
+Procedure CopyAndPasteDBTableToDT(long li_FromDBIndex, long li_FromDBTblIdx, long li_BlockNumber, string ls_ToDTName, 
+									 long li_StartRecordIdx, long li_EndRecordIdx, long li_StartFieldIdx, long li_EndFieldIdx, long li_TopRowIdx, long li_LeftColIdx)
+{
+	long li_Record;
+	long li_Field;
+	string ls_Value;
+	long li_TargetRowIdx;
+	long li_TargetColIdx;
+	
+	if (li_EndFieldIdx == 0) // if input of end field index is 0, use the last field index as end field index
+	{
+		li_EndFieldIdx = DBFieldsGetNum(li_FromDBIndex, li_FromDBTblIdx);
+	}
+	
+	if (li_EndRecordIdx == 0) // if input of end record index is 0, use the last record index as end record index
+	{
+		li_EndRecordIdx = DBRecordsGetNum(li_FromDBIndex, li_FromDBTblIdx);
+	}
+	
+	// start copy-and-paste	
+	for (li_Record = li_StartRecordIdx; li_Record <= li_EndRecordIdx; li_Record++)
+	{
+		for (li_Field = li_StartFieldIdx; li_Field <= li_EndFieldIdx; li_Field++)
+		{
+			ls_Value = DBDataGetAsString(li_FromDBIndex, li_FromDBTblIdx, li_Field, li_Record);
+			
+			li_TargetRowIdx = li_Record - li_StartRecordIdx + li_TopRowIdx;
+			li_TargetColIdx = li_Field - li_StartFieldIdx + li_LeftColIdx;
+			
+			SetDialogVariableNoMsg(li_BlockNumber, ls_ToDTName, ls_Value, li_TargetRowIdx, li_TargetColIdx);
+		}
+	}
+}
 
 *********************************************************************************************
 
